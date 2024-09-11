@@ -12,7 +12,7 @@ function App() {
     e.preventDefault(); 
     setLoading(true);
     try {
-      const response = await fetch(`${import.meta.env.VITE_FETCH_URL}`, {
+      const response = await fetch(`${import.meta.env.VITE_FETCH_URL}/api/hash-url`, {
         method: "POST",
         headers: {
           "content-Type": "application/json",
