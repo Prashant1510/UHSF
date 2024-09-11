@@ -46,11 +46,16 @@ function App() {
       const canvas = document.createElement("canvas");
       const context = canvas.getContext("2d");
       
+      // adding padding 
+      const padding = 20;
       // Set canvas size to match SVG size
       const svgRect = svg.getBoundingClientRect();
-      canvas.width = svgRect.width;
-      canvas.height = svgRect.height;
-  
+      canvas.width = svgRect.width +2 * padding;
+      canvas.height = svgRect.height +2 * padding;
+      
+      context.fillStyle = "white";
+      context.fillRect(0, 0, canvas.width, canvas.height);
+
       // Convert SVG to data URL
       const svgData = new XMLSerializer().serializeToString(svg);
       const svgBlob = new Blob([svgData], { type: "image/svg+xml;charset=utf-8" });
@@ -59,7 +64,7 @@ function App() {
       // Create an image from the SVG
       const img = new Image();
       img.onload = () => {
-        context.drawImage(img, 0, 0);
+        context.drawImage(img, padding, padding);
   
         // Convert canvas to PNG
         const pngUrl = canvas.toDataURL("image/png");
