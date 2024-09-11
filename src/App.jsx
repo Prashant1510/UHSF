@@ -3,8 +3,8 @@ import { useState } from "react";
 import { QRCodeSVG } from "qrcode.react";
 function App() {
   const [url, setUrl] = useState("");
-  const [maxAccess, setMaxAccess] = useState("Infinity Or Enter Number");
-  const [hashedUrl, setHashedUrl] = useState(true);
+  const [maxAccess, setMaxAccess] = useState("Infinity");
+  const [hashedUrl, setHashedUrl] = useState("");
   const [qrCode, setQrCode] = useState("");
   const [loading, setLoading] = useState(false);
 
@@ -27,6 +27,9 @@ function App() {
       setHashedUrl(data.hashedUrl);
       setQrCode(data.qrCode);
       setLoading(false);
+
+      setUrl("");
+      setMaxAccess("Infinity")
     } catch (error) {
       console.error("Error:", error);
       setLoading(false);
@@ -37,20 +40,49 @@ function App() {
     alert("Url Coppied! ");
   };
   const handleDownloadQR = () => {
-    const canvas = document.querySelector("canvas");
-    const pngUrl = canvas
-      .toDataURL("image/png")
-      .replace("imgae/png", "image/octet-stream");
-    const downloadLink = document.createElement("a");
-    downloadLink.href = pngUrl;
-    downloadLink.download = "hash-qr-code.png";
-    document.body.appendChild(downloadLink);
-    downloadLink.click;
-    document.removeChild(downloadLink);
+    const svg = document.querySelector("svg");
+    if (svg) {
+      // Create a canvas element
+      const canvas = document.createElement("canvas");
+      const context = canvas.getContext("2d");
+      
+      // Set canvas size to match SVG size
+      const svgRect = svg.getBoundingClientRect();
+      canvas.width = svgRect.width;
+      canvas.height = svgRect.height;
+  
+      // Convert SVG to data URL
+      const svgData = new XMLSerializer().serializeToString(svg);
+      const svgBlob = new Blob([svgData], { type: "image/svg+xml;charset=utf-8" });
+      const url = URL.createObjectURL(svgBlob);
+  
+      // Create an image from the SVG
+      const img = new Image();
+      img.onload = () => {
+        context.drawImage(img, 0, 0);
+  
+        // Convert canvas to PNG
+        const pngUrl = canvas.toDataURL("image/png");
+        const downloadLink = document.createElement("a");
+        downloadLink.href = pngUrl;
+        downloadLink.download = "hash-qr-code.png";
+        
+        // Trigger download
+        document.body.appendChild(downloadLink);
+        downloadLink.click();
+        document.body.removeChild(downloadLink);
+        
+        // Clean up
+        URL.revokeObjectURL(url);
+      };
+      img.src = url;
+    } else {
+      console.error("SVG element not found");
+    }
   };
   return (
     <>
-      <div className="container max-w-3xl mx-auto p-6 mt-10 bg-gray-50 rounded-lg shadow-lg">
+      <div className="container max-w-3xl mx-auto p-6 relative top-20 bg-gray-50 rounded-lg shadow-lg">
         <h1 className="text-3xl font-bold text-center mb-4 text-gray-600">
         QuickLink: Hash & Shorten URLs
         </h1>
@@ -94,7 +126,7 @@ function App() {
           </div>
         </form>
         {hashedUrl && (
-          <div className="flex flex-row justify-between mt-6 max-[400px]:flex-col">
+          <div className="flex flex-row justify-between mt-6 max-[500px]:flex-col">
             <div className="mb-4 flex flex-col">
               <p className="font-semibold">Hashed URL:</p>
               <p className="text-blue-600 break-all">{hashedUrl}</p>
