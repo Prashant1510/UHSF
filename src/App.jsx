@@ -3,9 +3,9 @@ import { useState } from "react";
 import { QRCodeSVG } from "qrcode.react";
 function App() {
   const [url, setUrl] = useState("");
-  const [maxAccess, setMaxAccess] = useState("Infinity");
-  const [hashedUrl, setHashedUrl] = useState("");
-  const [setQrCode] = useState("");
+  const [maxAccess, setMaxAccess] = useState("Infinity Or Enter Number");
+  const [hashedUrl, setHashedUrl] = useState(true);
+  const [qrCode, setQrCode] = useState("");
   const [loading, setLoading] = useState(false);
 
   const handleSubmit = async (e) => {
@@ -51,8 +51,8 @@ function App() {
   return (
     <>
       <div className="container max-w-3xl mx-auto p-6 mt-10 bg-gray-50 rounded-lg shadow-lg">
-        <h1 className="text-2xl font-bold text-center mb-4">
-          URL Hashing and Shortner
+        <h1 className="text-3xl font-bold text-center mb-4 text-gray-600">
+        QuickLink: Hash & Shorten URLs
         </h1>
         <form onSubmit={handleSubmit} method="post" className="space-y-4">
           <div>
@@ -87,30 +87,30 @@ function App() {
           <div>
             <button
               type="submit"
-              className="w-full bg-blue-500 text-white py-2 px-4 rounded-md hover:bg-blue-600 transition duration-300"
+              className="w-full bg-blue-400 text-white py-2 px-4 rounded-md hover:bg-blue-600 transition duration-200"
             >
               {loading ? "Processing..." : "Submit"}
             </button>
           </div>
         </form>
         {hashedUrl && (
-          <div className="flex flex-row justify-between mt-6">
-            <div className="mb-4">
+          <div className="flex flex-row justify-between mt-6 max-[400px]:flex-col">
+            <div className="mb-4 flex flex-col">
               <p className="font-semibold">Hashed URL:</p>
               <p className="text-blue-600 break-all">{hashedUrl}</p>
               <button
-                className="bg-green-500 text-white py-1 px-3 mt-2 rounded hover:bg-green-600 transition duration-300"
+                className="bg-green-500 text-white py-1 px-3 mt-2 rounded hover:bg-green-600 transition duration-200"
                 onClick={handleCopy}
               >
                 Copy Hashed URL
               </button>
             </div>
 
-            <div className="mb-4">
-              <p className="font-semibold">QR Code:</p>
-              <QRCodeSVG value={hashedUrl} />
+            <div className="mb-4 flex flex-col justify-center items-center">
+              <p className="font-semibold p-1">QR Code:</p>
+              <QRCodeSVG className="p-1" value={hashedUrl} />
               <button
-                className="bg-yellow-500 text-white py-1 px-3 mt-2 rounded hover:bg-yellow-600 transition duration-300"
+                className="bg-orange-500 text-white py-1 px-3 mt-2 rounded hover:bg-orange-600 transition duration-200"
                 onClick={handleDownloadQR}
               >
                 Download QR Code
