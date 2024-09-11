@@ -3,16 +3,16 @@ import { useState } from "react";
 import { QRCodeSVG } from "qrcode.react";
 function App() {
   const [url, setUrl] = useState("");
-  const [maxAccess, setMaxAccess] = useState("");
+  const [maxAccess, setMaxAccess] = useState("Infinity");
   const [hashedUrl, setHashedUrl] = useState("");
-  const [qrCode, setQrCode] = useState("");
+  const [setQrCode] = useState("");
   const [loading, setLoading] = useState(false);
 
   const handleSubmit = async (e) => {
     e.preventDefault(); 
     setLoading(true);
     try {
-      const response = await fetch("http://localhost:5000/api/hash-url", {
+      const response = await fetch("http://localhost:3001/api/hash-url", {
         method: "POST",
         headers: {
           "content-Type": "application/json",
@@ -54,7 +54,7 @@ function App() {
         <h1 className="text-2xl font-bold text-center mb-4">
           URL Hashing and Shortner
         </h1>
-        <form action="" method="post" className="space-y-4">
+        <form onSubmit={handleSubmit} method="post" className="space-y-4">
           <div>
             <label className="block text-sm font-medium text-gray-700">
               Enter URL
@@ -64,6 +64,7 @@ function App() {
                 setUrl(e.target.value);
               }}
               type="text"
+              value={url}
               placeholder="Enter the URL"
               required
               className="block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:border-blue-300"
@@ -78,13 +79,13 @@ function App() {
                 setMaxAccess(e.target.value);
               }}
               type="text"
+              value={maxAccess}
               placeholder="Enter Max Access Number (Optional)"
               className="block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:border-blue-300"
             />
           </div>
           <div>
             <button
-              onClick={handleSubmit}
               type="submit"
               className="w-full bg-blue-500 text-white py-2 px-4 rounded-md hover:bg-blue-600 transition duration-300"
             >
