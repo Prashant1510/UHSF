@@ -2,6 +2,8 @@
 
 QuickLink is a simple URL Hashing and Shortening service that allows users to shorten URLs, limit access, and generate QR codes for easy sharing. This project features a complete backend for hashing and a user-friendly frontend for seamless interaction.
 
+![QuickLink Home Page](screenshots/home.png)
+
 ## Live Demo
 
 Check out the live site: [QuickLink URL Shortener](https://quicklinkurls.netlify.app/)
